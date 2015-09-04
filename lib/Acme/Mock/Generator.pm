@@ -54,6 +54,11 @@ sub get {
   return $self->format($children);
 }
 
+sub format {
+  my ($self, $children) = @_;
+  return $children->{this};
+}
+
 ## =====================================================================
 ## Return the selected value
 
