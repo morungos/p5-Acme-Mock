@@ -1,4 +1,4 @@
-use Test::More tests => 9;
+use Test::More tests => 12;
 
 use strict;
 use warnings;
@@ -31,5 +31,10 @@ is($main->mock(), "Value: B -- Sub: F");
 is($main->mock(), "Value: C -- Sub: D");
 is($main->mock(), "Value: C -- Sub: E");
 is($main->mock(), "Value: C -- Sub: F");
+
+is_deeply($main->used_offsets(), [0, 1]);
+
+is($gen1->child_offset(), 0);
+is($gen2->child_offset(), 1);
 
 1;

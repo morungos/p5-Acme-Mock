@@ -3,19 +3,22 @@ use Test::More tests => 3;
 use strict;
 use warnings;
 
+use Acme::Mock;
 use Acme::Mock::TemplateGenerator;
 
 ## Basic template tests
+
+my $main = Acme::Mock->new();
 
 my $gen1 = Acme::Mock::TemplateGenerator->new();
 $gen1->name("test");
 $gen1->values(["A", "B", "C"]);
 $gen1->template("Value: {{this}}");
 
-is($gen1->get(), "Value: A");
+is($gen1->get($main), "Value: A");
 
 $gen1->index(1);
-is($gen1->get(), "Value: B");
+is($gen1->get($main), "Value: B");
 
 ## Hierarchical template tests
 
@@ -31,6 +34,6 @@ $gen2->index(2);
 
 $gen1->children([$gen2]);
 
-is($gen1->get(), "Value: A -- Sub: F");
+is($gen1->get($main), "Value: A -- Sub: F");
 
 1;

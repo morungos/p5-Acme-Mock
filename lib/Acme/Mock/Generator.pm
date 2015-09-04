@@ -13,6 +13,11 @@ has name => (
   isa => 'Str',
 );
 
+has child_offset => (
+  is  => 'rw',
+  isa => 'Int',
+);
+
 has index => (
   is  => 'rw',
   isa => 'Int',
@@ -33,22 +38,26 @@ has values => (
 
 sub initialize {
   my ($self, $main) = @_;
-  push @{$main->sorted_generators()}, $self;
+  my $sorted_generators = $main->sorted_generators();
+  push @$sorted_generators, $self;
+  $self->child_offset($#$sorted_generators);
   for my $child (@{$self->children()}) {
     $child->initialize($main);
   }
 }
 
 ## =====================================================================
-## The main entry point
+## The main entry point -- default behaviour uses all children
 
 sub get {
-  my ($self) = @_;
+  my ($self, $main) = @_;
+  my $used = $main->used_offsets();
+  push @$used, $self->child_offset();
   my $current = $self->get_selected();
   my $children = {this => $current};
   for my $child (@{$self->children()}) {
     my $child_name = $child->name();
-    my $child_value = $child->get();
+    my $child_value = $child->get($main);
     $children->{$child_name} = $child_value;
   }
   return $self->format($children);

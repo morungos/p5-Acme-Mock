@@ -14,6 +14,11 @@ has root => (
   isa => 'Acme::Mock::Generator',
 );
 
+has used_offsets => (
+  is  => 'rw',
+  isa => 'ArrayRef[Int]',
+);
+
 has sorted_generators => (
   is  => 'rw',
   isa => 'ArrayRef[Acme::Mock::Generator]',
@@ -63,8 +68,17 @@ sub randomize {
 
 sub mock {
   my ($self) = @_;
-  my $result = $self->root()->get();
+
+  ## Clear the currently used offsets
+  $self->used_offsets([]);
+
+  ## Go for it
+  my $result = $self->root()->get($self);
+
+  ## Step the used offsets
   $self->step();
+
+  ## And return
   return $result;
 }
 
