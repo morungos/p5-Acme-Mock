@@ -35,9 +35,11 @@ sub initialize {
 sub step {
   my ($self) = @_;
   my $children = $self->sorted_generators();
+  my $last;
   for(my $i = $#$children; $i >= 0; $i--) {
-    last unless $children->[$i]->step_with_wrap();
+    last unless $last = $children->[$i]->step_with_wrap();
   }
+  return $last;
 }
 
 ## =====================================================================

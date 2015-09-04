@@ -38,6 +38,7 @@ sub BUILD {
   $template->children([$animals, $qualities, $collectives]);
 
   $self->root($template);
+  $self->initialize();
 };
 
 1;
