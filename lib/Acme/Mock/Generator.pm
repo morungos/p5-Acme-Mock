@@ -16,6 +16,7 @@ has name => (
 has index => (
   is  => 'rw',
   isa => 'Int',
+  default => 0,
 );
 
 has children => (
@@ -40,17 +41,17 @@ sub initialize {
 
 ## =====================================================================
 ## The main entry point
+
 sub get {
   my ($self) = @_;
   my $current = $self->get_selected();
-  my $formatter = $self->formatter();
-  my $children = {};
+  my $children = {this => $current};
   for my $child (@{$self->children()}) {
     my $child_name = $child->name();
     my $child_value = $child->get();
     $children->{$child_name} = $child_value;
   }
-  return $self->format($current, $children);
+  return $self->format($children);
 }
 
 ## =====================================================================
@@ -94,7 +95,7 @@ sub step_with_wrap {
   my $index = $self->index();
   my $length = @{$self->values()};
   $index = $index + 1;
-  if ($index == $length) {
+  if ($index >= $length) {
     $self->index(0);
     return 1;
   } else {
