@@ -24,7 +24,7 @@ has sorted_generators => (
 
 sub initialize {
   my ($self) = @_;
-  self->sorted_generators([]);
+  $self->sorted_generators([]);
   $self->root()->initialize($self);
 }
 
@@ -34,7 +34,7 @@ sub initialize {
 
 sub step {
   my ($self) = @_;
-  my $children = self->sorted_generators();
+  my $children = $self->sorted_generators();
   for(my $i = $#$children; $i >= 0; $i--) {
     last unless $children->[$i]->step_with_wrap();
   }

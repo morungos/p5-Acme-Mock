@@ -99,6 +99,7 @@ sub step_with_wrap {
     $self->index(0);
     return 1;
   } else {
+    $self->index($index);
     return 0;
   }
 }
