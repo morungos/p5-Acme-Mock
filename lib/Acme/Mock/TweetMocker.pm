@@ -20,18 +20,22 @@ sub BUILD {
                      'badgers', 'kittens', 'puppies', 'gamergaters',
                      'stick insects', 'starfish', 'wallabies', 'lemurs',
                      'armadilloes', 'aardvarks', 'weasels', 'stoats', 'cops',
-                     'dormice' ]);
+                     'dormice', 'cuckoos' ]);
 
   my $collectives = Acme::Mock::Generator->new();
   $collectives->name('collective');
   $collectives->values([ 'basket', 'box', 'crate', 'cart', 'shoal', 'swarm',
                          'school', 'raft', 'rabble', 'punnet', 'pod', 'posse',
-                         'mob' ]);
+                         'mob', 'troop', 'clutch', 'brace', 'stack',
+                         'warehouse', 'armada', 'bundle', 'pile', 'heap',
+                         'parcel' ]);
 
   my $qualities = Acme::Mock::Generator->new();
   $qualities->name('quality');
   $qualities->values([ 'hopeless', 'oblivious', 'deluded', 'incompetent',
-                         'clueless', 'incoherent', 'thoughtless', 'naive' ]);
+                       'clueless', 'incoherent', 'thoughtless', 'naive',
+                       'ignorant', 'dense', 'dopey', 'witless', 'inept',
+                       'cack-handed' ]);
 
   my $template = Acme::Mock::TemplateGenerator->new();
   $template->template("More {{quality}} than a {{collective}} of {{animal}}");
