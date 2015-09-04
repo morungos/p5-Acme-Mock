@@ -1,4 +1,4 @@
-use Test::More tests => 6;
+use Test::More tests => 8;
 
 use strict;
 use warnings;
@@ -19,6 +19,11 @@ is_deeply($gen1->values(), ["A", "B", "C"]);
 $gen1->index(2);
 $gen1->reset();
 is($gen1->index(), 0);
+
+## Check get_selected
+is($gen1->get_selected(), "A");
+$gen1->index(2);
+is($gen1->get_selected(), "C");
 
 ## Check randomize
 $gen1->randomize();
