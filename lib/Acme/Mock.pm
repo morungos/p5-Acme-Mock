@@ -40,9 +40,11 @@ sub initialize {
 sub step {
   my ($self) = @_;
   my $children = $self->sorted_generators();
+  my $used_offsets = $self->used_offsets();
   my $last;
-  for(my $i = $#$children; $i >= 0; $i--) {
-    last unless $last = $children->[$i]->step_with_wrap();
+  for(my $i = $#$used_offsets; $i >= 0; $i--) {
+    my $offset = $used_offsets->[$i];
+    last unless $last = $children->[$offset]->step_with_wrap();
   }
   return $last;
 }

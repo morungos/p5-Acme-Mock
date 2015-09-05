@@ -32,7 +32,7 @@ has children => (
 
 has values => (
   is  => 'rw',
-  isa => 'ArrayRef[Str]',
+  isa => 'ArrayRef',
   default => sub { [] },
 );
 
@@ -49,17 +49,44 @@ sub initialize {
 ## =====================================================================
 ## The main entry point -- default behaviour uses all children
 
+sub find_named_child {
+  my ($self, $name) = @_;
+  for my $child (@{$self->children()}) {
+    if ($child->name() eq $name) {
+      return $child;
+    }
+  }
+}
+
+sub get_named_child {
+  my ($self, $main, $name) = @_;
+  my $child = $self->find_named_child($name);
+  return $child->get($main);
+}
+
+sub get_children {
+  my ($self, $main, $children) = @_;
+  my $result = {};
+  for my $child (@$children) {
+    my $child_name = $child->name();
+    my $child_value = $child->get($main);
+    $result->{$child_name} = $child_value;
+  }
+  return $result;
+}
+
+sub get_all_children {
+  my ($self, $main) = @_;
+  return $self->get_children($main, $self->children());
+}
+
 sub get {
   my ($self, $main) = @_;
   my $used = $main->used_offsets();
   push @$used, $self->child_offset();
   my $current = $self->get_selected();
-  my $children = {this => $current};
-  for my $child (@{$self->children()}) {
-    my $child_name = $child->name();
-    my $child_value = $child->get($main);
-    $children->{$child_name} = $child_value;
-  }
+  my $children = $self->get_all_children($main);
+  $children->{this} = $current;
   return $self->format($children);
 }
 
