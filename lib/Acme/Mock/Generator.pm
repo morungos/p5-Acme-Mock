@@ -61,6 +61,7 @@ sub find_named_child {
 sub get_named_child {
   my ($self, $main, $name) = @_;
   my $child = $self->find_named_child($name);
+  $DB::single = 1 if (! $child);
   return $child->get($main);
 }
 

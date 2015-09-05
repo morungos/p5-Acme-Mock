@@ -7,6 +7,8 @@ use Moose;
 
 use Acme::Mock;
 use Acme::Mock::TemplateGenerator;
+use Acme::Mock::ConstantGenerator;
+use Acme::Mock::ConditionalGenerator;
 use Acme::Mock::Generator;
 
 extends 'Acme::Mock';
@@ -41,9 +43,22 @@ sub BUILD {
                          'warehouse', 'armada', 'bundle', 'pile', 'heap',
                          'parcel' ]);
 
+  my $suffix_absent = Acme::Mock::ConstantGenerator->new();
+  $suffix_absent->name("suffix_absent");
+  $suffix_absent->values([""]);
+
+  my $suffix_present = Acme::Mock::ConstantGenerator->new();
+  $suffix_present->name("suffix_present");
+  $suffix_present->values([", but better at singing"]);
+
+  my $suffix = Acme::Mock::ConditionalGenerator->new();
+  $suffix->name("suffix");
+  $suffix->values(["suffix_absent", "suffix_present"]);
+  $suffix->children([$suffix_absent, $suffix_present]);
+
   my $template = Acme::Mock::TemplateGenerator->new();
-  $template->template("{{intro}} a {{collective}} of {{animal}}");
-  $template->children([$qualities, $intro, $animals, $collectives]);
+  $template->template("{{intro}} a {{collective}} of {{animal}}{{suffix}}");
+  $template->children([$qualities, $intro, $animals, $collectives, $suffix]);
 
   $self->root($template);
   $self->initialize();
