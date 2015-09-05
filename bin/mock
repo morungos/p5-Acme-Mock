@@ -1,0 +1,18 @@
+#!/usr/bin/env perl -w
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use feature qw(say);
+
+use Acme::Mock::TweetMocker;
+
+my $mocker = Acme::Mock::TweetMocker->new();
+$mocker->randomize();
+
+say $mocker->mock();
+
+1;
