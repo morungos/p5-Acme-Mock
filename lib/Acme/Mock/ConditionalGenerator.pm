@@ -19,7 +19,11 @@ sub get {
   my $used = $main->used_offsets();
   push @$used, $self->child_offset();
   my $current = $self->get_selected();
-  return $self->get_named_child($main, $current);
+  if ($current) {
+    return $self->get_named_child($main, $current);
+  } else {
+    return "";
+  }
 }
 
 1;

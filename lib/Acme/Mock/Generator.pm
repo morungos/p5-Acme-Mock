@@ -65,8 +65,7 @@ sub get_named_child {
 }
 
 sub get_children {
-  my ($self, $main, $children) = @_;
-  my $result = {};
+  my ($self, $main, $children, $result) = @_;
   for my $child (@$children) {
     my $child_name = $child->name();
     my $child_value = $child->get($main);
@@ -76,8 +75,8 @@ sub get_children {
 }
 
 sub get_all_children {
-  my ($self, $main) = @_;
-  return $self->get_children($main, $self->children());
+  my ($self, $main, $result) = @_;
+  return $self->get_children($main, $self->children(), $result);
 }
 
 sub get {
@@ -85,9 +84,9 @@ sub get {
   my $used = $main->used_offsets();
   push @$used, $self->child_offset();
   my $current = $self->get_selected();
-  my $children = $self->get_all_children($main);
-  $children->{this} = $current;
-  return $self->format($children);
+  my $values = {this => $current};
+  $values = $self->get_all_children($main, $values);
+  return $self->format($values);
 }
 
 sub format {
