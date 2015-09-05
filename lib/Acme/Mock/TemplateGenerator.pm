@@ -20,7 +20,8 @@ has template => (
 sub format {
   my ($self, $keys) = @_;
   my $template = $self->template();
-  return $template =~ s/\{\{\s*(\w+)\s*\}\}/ $keys->{$1}; /egr;
+  while ($template =~ s/\{\{\s*(\w+)\s*\}\}/ $keys->{$1}; /eg) { };
+  return $template;
 }
 
 1;
