@@ -9,7 +9,7 @@ my $mocker = Acme::Mock::TweetMocker->new();
 $mocker->reset();
 
 my $first = $mocker->mock();
-is($first, "More hopeless than a basket of Kardashians");
+is($first, "as hopeless as a basket of Kardashians");
 
 my $second = $mocker->mock();
 isnt($second, $first);
