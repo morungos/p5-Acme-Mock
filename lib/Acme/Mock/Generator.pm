@@ -65,33 +65,33 @@ sub get_named_child {
 }
 
 sub get_children {
-  my ($self, $main, $children, $result) = @_;
+  my ($self, $main, $children, $context) = @_;
   for my $child (@$children) {
     my $child_name = $child->name();
     my $child_value = $child->get($main);
-    $result->{$child_name} = $child_value;
+    $context->{$child_name} = $child_value;
   }
-  return $result;
+  return $context;
 }
 
 sub get_all_children {
-  my ($self, $main, $result) = @_;
-  return $self->get_children($main, $self->children(), $result);
+  my ($self, $main, $context) = @_;
+  return $self->get_children($main, $self->children(), $context);
 }
 
 sub get {
-  my ($self, $main) = @_;
+  my ($self, $main, $context) = @_;
   my $used = $main->used_offsets();
   push @$used, $self->child_offset();
   my $current = $self->get_selected();
-  my $values = {this => $current};
-  $values = $self->get_all_children($main, $values);
-  return $self->format($values);
+  $context->{this} = $current;
+  $context = $self->get_all_children($main, $context);
+  return $self->format($context);
 }
 
 sub format {
-  my ($self, $children) = @_;
-  return $children->{this};
+  my ($self, $context) = @_;
+  return $context->{this};
 }
 
 ## =====================================================================

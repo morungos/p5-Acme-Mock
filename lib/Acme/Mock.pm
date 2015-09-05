@@ -75,7 +75,7 @@ sub mock {
   $self->used_offsets([]);
 
   ## Go for it
-  my $result = $self->root()->get($self);
+  my $result = $self->root()->get($self, {});
 
   ## Step the used offsets
   $self->step();
