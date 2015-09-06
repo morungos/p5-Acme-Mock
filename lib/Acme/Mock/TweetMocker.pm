@@ -47,9 +47,16 @@ sub BUILD {
   $suffix_absent->name("suffix_absent");
   $suffix_absent->values([""]);
 
-  my $suffix_present = Acme::Mock::ConstantGenerator->new();
+  my $skill = Acme::Mock::Generator->new();
+  $skill->name('skill');
+  $skill->values([ 'singing', 'poetry', 'stamp collecting', 'origami',
+                   'philosophy', 'ballet', 'being a doorstop',
+                   'speaking Icelandic' ]);
+
+  my $suffix_present = Acme::Mock::TemplateGenerator->new();
   $suffix_present->name("suffix_present");
-  $suffix_present->values([", but better at singing"]);
+  $suffix_present->template(", but better at {{skill}}");
+  $suffix_present->children([$skill]);
 
   my $suffix = Acme::Mock::ConditionalGenerator->new();
   $suffix->name("suffix");
